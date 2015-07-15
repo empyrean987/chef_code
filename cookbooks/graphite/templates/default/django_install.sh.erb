@@ -5,8 +5,7 @@ then
  echo 'django is installed'
 else
  echo 'installing django database'
- PYTHONPATH=/usr/lib/python2.6/site-packages /usr/lib/python2.6/site-packages/django/bin/django-admin.py syncdb --settings=graphite.settings --noinput > /root/c
-hef_code/django_installed_execute
+ PYTHONPATH=/usr/lib/python2.6/site-packages /usr/lib/python2.6/site-packages/django/bin/django-admin.py syncdb --settings=graphite.settings --noinput > /root/chef_code/django_installed_execute
  cat /root/chef_code/django_installed_execute | grep Installed > /root/chef_code/django_installed
  if [ -s /root/chef_code/django_installed ]
  then
