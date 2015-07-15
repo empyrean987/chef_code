@@ -8,33 +8,33 @@ package 'mod_wsgi-python27.x86_64'
 package 'python27-pycairo.x86_64'
   options "--enablerepo=epel"
 end
-package 'python27-pycairo-devel.x86_64'
+package 'python27-pycairo-devel.x86_64' do
   options "--enablerepo=epel"
 end
-package 'Django14.noarch'
+package 'Django14.noarch' od
   options "--enablerepo=epel"
 end
-package 'python-django-tagging.noarch'
+package 'python-django-tagging.noarch' do
   options "--enablerepo=epel"
 end
-package 'python27-twisted.noarch'
+package 'python27-twisted.noarch' do
   options "--enablerepo=epel"
 end
-package 'python-django15.noarch'
+package 'python-django15.noarch' do
   options "--enablerepo=epel"
 end
 package 'gcc'
-package 'python27-pytz.noarch'
-package 'pyparsing.noarch'
+package 'python27-pytz.noarch' do
+package 'pyparsing.noarch' do
   options "--enablerepo=epel"
 end
-package 'graphite-web.noarch'
+package 'graphite-web.noarch' do
   options "--enablerepo=epel"
 end
-package 'python-carbon.noarch'
+package 'python-carbon.noarch' do
   options "--enablerepo=epel"
 end
-package 'python-whisper.noarch'
+package 'python-whisper.noarch' do
   options "--enablerepo=epel"
 end
 
