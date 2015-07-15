@@ -42,6 +42,10 @@ template '/etc/httpd/conf.d/graphite-web.conf' do
   source 'graphite-web.conf.erb'
 end
 
+template '/etc/init.d/carbon-cache' do
+  source 'carbon-cache.erb'
+end
+
 installed_file_path = "/usr/lib/python2.6/site-packages/django/__init__.pyc"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
 execute "install database" do
