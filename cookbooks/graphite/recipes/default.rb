@@ -11,7 +11,7 @@ end
 package 'python27-pycairo-devel.x86_64' do
   options "--enablerepo=epel"
 end
-package 'Django14.noarch' od
+package 'Django14.noarch' do
   options "--enablerepo=epel"
 end
 package 'python-django-tagging.noarch' do
