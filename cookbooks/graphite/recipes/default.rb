@@ -38,9 +38,9 @@ package 'python-whisper.noarch' do
   options "--enablerepo=epel"
 end
 
-#template '/etc/httpd/conf.d/graphite.conf' do
-#  source 'graphite.conf.erb'
-#end
+template '/etc/httpd/conf.d/graphite-web.conf' do
+  source 'graphite-web.conf.erb'
+end
 
 #template '/opt/graphite/webapp/graphite/local_settings.py' do
 #  source 'local_settings.py.erb'
@@ -55,7 +55,7 @@ end
 #end
 
 
-#service 'httpd' do
-#  supports :status => true
-#  action [:enable, :start]
-#end
+service 'httpd' do
+  supports :status => true
+  action [:enable, :start]
+end
