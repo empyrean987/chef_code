@@ -68,6 +68,7 @@ end
 
 template '/root/chef_code/django_install.sh.erb' do
   source 'django_install.sh.erb'
+end
 
 installed_file_path = "/root/chef_code/django_installed_correctly"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
