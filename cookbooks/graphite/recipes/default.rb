@@ -42,18 +42,13 @@ template '/etc/httpd/conf.d/graphite-web.conf' do
   source 'graphite-web.conf.erb'
 end
 
-template '/etc/graphite-web/local_settings.py' do
-  source 'local_settings.py.erb'
+installed_file_path = "/usr/lib/python2.6/site-packages/django/__init__.pyc"
+uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
+execute "install database" do
+  command "PYTHONPATH=/usr/lib/python2.6/site-packages /usr/lib/python2.6/site-packages/django/bin/django-admin.py syncdb --settings=graphite.settings --noinput"
+  cwd uncompressed_file_dir
+  not_if { File.exists?(installed_file_path) }
 end
-
-template '/etc/carbon/carbon.conf' do
-  source 'carbon.conf.erb'
-end
-
-#template '/opt/graphite/conf/graphite.wsgi' do
-#  source 'graphite.wsgi.erb'
-#end
-
 
 service 'httpd' do
   supports :status => true
