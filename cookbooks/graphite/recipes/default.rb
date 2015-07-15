@@ -42,6 +42,10 @@ template '/etc/httpd/conf.d/graphite-web.conf' do
   source 'graphite-web.conf.erb'
 end
 
+template '/etc/httpd/conf/httpd.conf' do
+  source 'httpd.conf.erb'
+end
+
 template '/etc/init.d/carbon-cache' do
   source 'carbon-cache.erb'
 end
