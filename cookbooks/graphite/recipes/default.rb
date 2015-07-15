@@ -66,6 +66,9 @@ template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
 end
 
+template '/root/chef_code/django_install.sh.erb' do
+  source 'django_install.sh.erb'
+
 installed_file_path = "/tmp/test"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
 execute "install database" do
