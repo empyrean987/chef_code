@@ -2,8 +2,16 @@
 echo "YO YO"
 echo "Updating OS"
 sudo yum update -y
-echo "installing git"
-sudo yum install -y git
+echo "verifying git"
+rpm -qa | grep git > git.txt
+if [ -s git.txt ]
+then
+  echo "git installed"
+else
+  echo "installing git"
+  sudo yum install -y git
+fi
+echo "verifying chef"
 rpm -qa | grep chef > chef.txt
 if [ -s chef.txt ]
 then
