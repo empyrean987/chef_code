@@ -54,6 +54,10 @@ template '/var/www/error/error.html' do
   source 'error.html.erb'
 end
 
+template '/etc/ssh/sshd_config' do
+  source 'sshd_config.erb'
+end
+
 installed_file_path = "/usr/lib/python2.6/site-packages/django/__init__.pyc"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
 execute "install database" do
@@ -68,6 +72,11 @@ service 'httpd' do
 end
 
 service 'carbon-cache' do
+  supports :status => true
+  action [:enable, :restart]
+end
+
+service 'sshd' do
   supports :status => true
   action [:enable, :restart]
 end
