@@ -42,9 +42,9 @@ template '/etc/httpd/conf.d/graphite-web.conf' do
   source 'graphite-web.conf.erb'
 end
 
-#template '/opt/graphite/webapp/graphite/local_settings.py' do
-#  source 'local_settings.py.erb'
-#end
+template '/etc/graphite-web/local_settings.py' do
+  source 'local_settings.py.erb'
+end
 
 #template '/opt/graphite/conf/carbon.conf' do
 #  source 'carbon.conf.erb'
