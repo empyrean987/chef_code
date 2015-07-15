@@ -62,7 +62,7 @@ template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
 end
 
-installed_file_path = "/usr/lib/python2.6/site-packages/django/__init__.pyc"
+installed_file_path = "/tmp/test"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
 execute "install database" do
   command "PYTHONPATH=/usr/lib/python2.6/site-packages /usr/lib/python2.6/site-packages/django/bin/django-admin.py syncdb --settings=graphite.settings --noinput"
