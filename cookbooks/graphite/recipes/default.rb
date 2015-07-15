@@ -71,7 +71,7 @@ template '/root/chef_code/django_install.sh.erb' do
 end
 
 installed_file_path = "/root/chef_code/django_installed_correctly"
-uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
+uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/"
 execute "install database" do
   command "/root/chef_code/django_install.sh"
   cwd uncompressed_file_dir
