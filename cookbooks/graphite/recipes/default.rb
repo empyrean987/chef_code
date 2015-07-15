@@ -5,7 +5,7 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 package 'httpd'
 package 'mod_wsgi-python27.x86_64'
-package 'python27-pycairo.x86_64'
+package 'python27-pycairo.x86_64' do
   options "--enablerepo=epel"
 end
 package 'python27-pycairo-devel.x86_64' do
@@ -24,7 +24,7 @@ package 'python-django15.noarch' do
   options "--enablerepo=epel"
 end
 package 'gcc'
-package 'python27-pytz.noarch' do
+package 'python27-pytz.noarch'
 package 'pyparsing.noarch' do
   options "--enablerepo=epel"
 end
