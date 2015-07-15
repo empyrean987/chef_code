@@ -58,6 +58,10 @@ template '/var/www/error/error.html' do
   source 'error.html.erb'
 end
 
+template '/etc/httpd/conf.d/welcome.conf' do
+  source 'welcome.conf.erb'
+end
+
 template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
 end
