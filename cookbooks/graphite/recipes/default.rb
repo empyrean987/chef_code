@@ -66,7 +66,7 @@ template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
 end
 
-template '/root/chef_code/django_install.sh.erb' do
+template '/root/chef_code/django_install.sh' do
   source 'django_install.sh.erb'
 end
 
