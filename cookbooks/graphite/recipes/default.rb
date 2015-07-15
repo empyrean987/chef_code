@@ -68,7 +68,9 @@ end
 
 template '/root/chef_code/django_install.sh' do
   source 'django_install.sh.erb'
-  mode '0755'`
+  owner 'root'
+  group 'root'
+  mode '0755'
 end
 
 installed_file_path = "/root/chef_code/django_installed_correctly"
