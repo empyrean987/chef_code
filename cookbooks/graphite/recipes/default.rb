@@ -69,10 +69,10 @@ end
 template '/root/chef_code/django_install.sh.erb' do
   source 'django_install.sh.erb'
 
-installed_file_path = "/tmp/test"
+installed_file_path = "/root/chef_code/django_installed_correctly"
 uncompressed_file_dir = "/usr/lib/python2.6/site-packages/django/bin/django-admin.py"
 execute "install database" do
-  command "PYTHONPATH=/usr/lib/python2.6/site-packages /usr/lib/python2.6/site-packages/django/bin/django-admin.py syncdb --settings=graphite.settings --noinput"
+  command "/root/chef_code/django_install.sh"
   cwd uncompressed_file_dir
   not_if { File.exists?(installed_file_path) }
 end
