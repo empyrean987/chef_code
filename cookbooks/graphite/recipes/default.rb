@@ -81,6 +81,11 @@ execute "install database" do
   not_if { File.exists?(installed_file_path) }
 end
 
+file '/var/lib/graphite-web/graphite.db' do
+  owner 'apache'
+  group 'apache'
+end
+
 service 'httpd' do
   supports :status => true
   action [:enable, :restart]
