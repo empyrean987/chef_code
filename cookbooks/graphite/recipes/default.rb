@@ -149,7 +149,7 @@ end
 #This sets the httpd service to be enabled in the operating system to be started on restart
 service 'httpd' do
   supports :status => true
-  action [:enable,:start]
+  action [:start]
 end
 
 #This file needs to be commented out so it no longer is reference by apache
@@ -174,6 +174,11 @@ end
 template '/etc/httpd/conf/wsgi.conf' do
   source 'wsgi.conf.erb'
   notifies :reload, 'service[httpd]'
+end
+
+service 'httpd' do
+  supports :status => true
+  action [:start]
 end
 
 #This sets the sshd service to be enabled in the operating system to be started on restart
