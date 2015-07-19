@@ -61,6 +61,18 @@ execute 'carbon_install' do
   command 'pip install carbon'
 end
 
+template '/opt/graphite/conf/graphite.wsgi' do
+  source 'graphite.wsgi.erb'
+end
+
+
+template '/root/chef_code/django_install.sh' do
+  source 'django_install.sh.erb'
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
+
 installed_file_path = "/root/chef_code/django_installed_correctly"
 uncompressed_file_dir = "/usr/local/lib/python2.7/site-packages/django/bin"
 execute "install database" do
