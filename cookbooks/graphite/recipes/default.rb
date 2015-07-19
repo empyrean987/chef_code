@@ -96,11 +96,10 @@ template '/etc/init.d/carbon-cache' do
   group 'root'
   mode '0755'
 end
-
 #This sets the carb-cache service to be enabled in the operating system to be started on restart
 service 'carbon-cache' do
   supports :status => true
-  action [:enable,:start]
+  action [:enable]
 end
 
 #Configuration file for storage schemas, restart carbon-cache if modified
@@ -121,6 +120,12 @@ template '/opt/graphite/conf/storage-aggregation.conf' do
   notifies :reload, 'service[carbon-cache]'
 end
 
+#Making sure carbon-cache is started after first install, otherwise makes sure its running
+service 'carbon-cache' do
+  supports :status => true
+  action [:start]
+end
+
 #Modify /opt/graphite/storage to be owned and grouped by apache, could not use directory resource
 execute 'fix_ownership' do
   command 'chown -R apache:apache /opt/graphite/storage/'
@@ -136,11 +141,6 @@ template '/var/www/error/error.html' do
   source 'error.html.erb'
 end
 
-#This file needs to be commented out so it no longer is reference by apache
-template '/etc/httpd/conf.d/welcome.conf' do
-  source 'welcome.conf.erb'
-end
-
 #Configuration file for graphite-web python application
 template '/opt/graphite/webapp/graphite/local_settings.py' do
   source 'local_settings.py.erb'
@@ -150,6 +150,12 @@ end
 service 'httpd' do
   supports :status => true
   action [:enable,:start]
+end
+
+#This file needs to be commented out so it no longer is reference by apache
+template '/etc/httpd/conf.d/welcome.conf' do
+  source 'welcome.conf.erb'
+  notifies :reload, 'service[httpd]'
 end
 
 #This is the configuration file for the web portion of graphite
