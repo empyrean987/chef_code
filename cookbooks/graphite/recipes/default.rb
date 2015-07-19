@@ -90,6 +90,9 @@ end
 
 template '/etc/init.d/carbon-cache' do
   source 'carbon-cache.erb'
+  owner 'root'
+  group 'root'
+  mode '0755'
 end
 
 service 'carbon-cache' do
