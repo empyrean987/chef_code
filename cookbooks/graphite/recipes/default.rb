@@ -149,9 +149,10 @@ end
 
 
 
-file '/var/lib/graphite-web/graphite.db' do
+directory '/opt/graphite/storage/' do
   owner 'apache'
   group 'apache'
+  recursive 'true'
 end
 
 
