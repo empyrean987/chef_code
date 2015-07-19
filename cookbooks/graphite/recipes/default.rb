@@ -122,6 +122,10 @@ template '/etc/httpd/conf/httpd.conf' do
   source 'httpd.conf.erb'
 end
 
+template '/etc/httpd/conf/wsgi.conf' do
+  source 'wsgi.conf.erb'
+end
+
 
 
 template '/var/www/error/error.html' do
