@@ -69,6 +69,10 @@ template '/opt/graphite/conf/storage-schemas.conf' do
   source 'storage-schemas.conf.erb'
 end
 
+template '/opt/graphite/conf/carbon.conf' do
+  source 'carbon.conf.erb'
+end
+
 template '/root/chef_code/django_install.sh' do
   source 'django_install.sh.erb'
   owner 'root'
