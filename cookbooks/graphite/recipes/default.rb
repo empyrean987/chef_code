@@ -61,18 +61,7 @@ execute 'carbon_install' do
   command 'pip install carbon'
 end
 
-template '/opt/graphite/conf/graphite.wsgi' do
-  source 'graphite.wsgi.erb'
-end
-
-template '/opt/graphite/conf/storage-schemas.conf' do
-  source 'storage-schemas.conf.erb'
-end
-
-template '/opt/graphite/conf/carbon.conf' do
-  source 'carbon.conf.erb'
-end
-
+#Script to install database, needs to be executable and ran by root
 template '/root/chef_code/django_install.sh' do
   source 'django_install.sh.erb'
   owner 'root'
@@ -80,14 +69,18 @@ template '/root/chef_code/django_install.sh' do
   mode '0755'
 end
 
+#This file has the keyword installed if the datbase was installed correctly
 installed_file_path = "/root/chef_code/django_installed_correctly"
+#This defines where the django admin script is that will be used to install the database
 uncompressed_file_dir = "/usr/local/lib/python2.7/site-packages/django/bin"
+#This is the execution of installing the django database and ensuring it installed correctly
 execute "install database" do
   command "/root/chef_code/django_install.sh"
   cwd uncompressed_file_dir
   not_if { File.exists?(installed_file_path) }
 end
 
+#This is the startup script fro carbon-cache
 template '/etc/init.d/carbon-cache' do
   source 'carbon-cache.erb'
   owner 'root'
@@ -95,74 +88,94 @@ template '/etc/init.d/carbon-cache' do
   mode '0755'
 end
 
+#This sets the carb-cache service to be enabled in the operating system to be started on restart
 service 'carbon-cache' do
   supports :status => true
   action [:enable]
 end
 
+#Configuration file for storage schemas, restart carbon-cache if modified
+template '/opt/graphite/conf/storage-schemas.conf' do
+  source 'storage-schemas.conf.erb'
+  notifies :restart, 'service[carbon-cache]'
+end
+
+#Configuration file for carbon, restart carbon-cache if modified
+template '/opt/graphite/conf/carbon.conf' do
+  source 'carbon.conf.erb'
+  notifies :restart, 'service[carbon-cache]'
+end
+
+#Configuration file for storage aggregation, restart carbon-cache if modified
 template '/opt/graphite/conf/storage-aggregation.conf' do
   source 'storage-aggregation.conf.erb'
   notifies :restart, 'service[carbon-cache]'
 end
 
-service 'httpd' do
-  supports :status => true
-  action [:enable]
-end
-
-template '/etc/httpd/conf.d/graphite-web.conf' do
-  source 'graphite-web.conf.erb'
-end
-
-template '/etc/graphite-web/local_settings.py' do
-  source 'local_settings.py.erb'
-end
-
-template '/etc/httpd/conf/httpd.conf' do
-  source 'httpd.conf.erb'
-end
-
-template '/etc/httpd/conf/wsgi.conf' do
-  source 'wsgi.conf.erb'
-end
-
-
-
-template '/var/www/error/error.html' do
-  source 'error.html.erb'
-end
-
-template '/etc/httpd/conf.d/welcome.conf' do
-  source 'welcome.conf.erb'
-end
-
-template '/etc/ssh/sshd_config' do
-  source 'sshd_config.erb'
-end
-
-template '/root/chef_code/django_install.sh' do
-  source 'django_install.sh.erb'
-  owner 'root'
-  group 'root'
-  mode '0755'
-end
-
-
-
+#Modify /opt/graphite/storage to be owned and grouped by apache
 directory '/opt/graphite/storage/' do
   owner 'apache'
   group 'apache'
   recursive 'true'
 end
 
-
-
-service 'carbon-cache' do
-  supports :status => true
-  action [:enable, :restart]
+#The graphite.wsgi need to be created for graphite to work
+template '/opt/graphite/conf/graphite.wsgi' do
+  source 'graphite.wsgi.erb'
 end
 
-service 'sshd' do
-  supports :status => true
-  action [:enable, :restart]
+#The error.html file need to be created for when a disallowed ip address trys to access website
+template '/var/www/error/error.html' do
+  source 'error.html.erb'
 end
+
+#This file needs to be commented out so it no longer is reference by apache
+template '/etc/httpd/conf.d/welcome.conf' do
+  source 'welcome.conf.erb'
+end
+
+#Configuration file for graphite-web python application
+template '/etc/graphite-web/local_settings.py' do
+  source 'local_settings.py.erb'
+end
+
+#This sets the httpd service to be enabled in the operating system to be started on restart
+service 'httpd' do
+  supports :status => true
+  action [:enable]
+end
+
+#This is the configuration file for the web portion of graphite
+template '/etc/httpd/conf.d/graphite-web.conf' do
+  source 'graphite-web.conf.erb'
+  notifies :reload, 'service[httpd]'
+end
+
+#This is the conifguration file for apache to work correctly
+template '/etc/httpd/conf/httpd.conf' do
+  source 'httpd.conf.erb'
+  notifies :reload, 'service[httpd]'
+end
+
+#This is the conifguration file for apache to work correctly withy wsgi
+template '/etc/httpd/conf/wsgi.conf' do
+  source 'wsgi.conf.erb'
+  notifies :reload, 'service[httpd]'
+end
+
+#Template to modify sshd configuration, and on moidification restart
+template '/etc/ssh/sshd_config' do
+  source 'sshd_config.erb'
+  notifies :restart, 'service[sshd]'
+end
+
+
+
+
+
+
+
+
+
+
+
