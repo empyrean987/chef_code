@@ -100,25 +100,25 @@ end
 #This sets the carb-cache service to be enabled in the operating system to be started on restart
 service 'carbon-cache' do
   supports :status => true
-  action [:enable]
+  action [:enable,:start]
 end
 
 #Configuration file for storage schemas, restart carbon-cache if modified
 template '/opt/graphite/conf/storage-schemas.conf' do
   source 'storage-schemas.conf.erb'
-  notifies :restart, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]'
 end
 
 #Configuration file for carbon, restart carbon-cache if modified
 template '/opt/graphite/conf/carbon.conf' do
   source 'carbon.conf.erb'
-  notifies :restart, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]'
 end
 
 #Configuration file for storage aggregation, restart carbon-cache if modified
 template '/opt/graphite/conf/storage-aggregation.conf' do
   source 'storage-aggregation.conf.erb'
-  notifies :restart, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]'
 end
 
 #Modify /opt/graphite/storage to be owned and grouped by apache
@@ -151,7 +151,7 @@ end
 #This sets the httpd service to be enabled in the operating system to be started on restart
 service 'httpd' do
   supports :status => true
-  action [:enable]
+  action [:enable,:start]
 end
 
 #This is the configuration file for the web portion of graphite
