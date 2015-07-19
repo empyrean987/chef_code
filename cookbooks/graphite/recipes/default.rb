@@ -149,7 +149,7 @@ end
 #This sets the httpd service to be enabled in the operating system to be started on restart
 service 'httpd' do
   supports :status => true
-  action [:start]
+  action [:enable]
 end
 
 #This file needs to be commented out so it no longer is reference by apache
