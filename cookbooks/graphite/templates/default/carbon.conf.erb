@@ -30,21 +30,14 @@
 #
 #LOCAL_DATA_DIR = /opt/graphite/storage/whisper/
 
-STORAGE_DIR    = /var/lib/carbon/
-LOCAL_DATA_DIR = /var/lib/carbon/whisper/
-WHITELISTS_DIR = /var/lib/carbon/lists/
-CONF_DIR       = /etc/carbon/
-LOG_DIR        = /var/log/carbon/
-PID_DIR        = /var/run/
-
-# Enable daily log rotation. If disabled, a kill -HUP can be used after a manual rotate
+# Enable daily log rotation. If disabled, carbon will automatically re-open
+# the file if it's rotated out of place (e.g. by logrotate daemon)
 ENABLE_LOGROTATION = True
 
 # Specify the user to drop privileges to
 # If this is blank carbon runs as the user that invokes it
 # This user must have write access to the local data directory
-USER = carbon
-
+USER =
 #
 # NOTE: The above settings must be set under [relay] and [aggregator]
 #       to take effect for those daemons as well
@@ -64,7 +57,7 @@ MAX_UPDATES_PER_SECOND = 500
 # If defined, this changes the MAX_UPDATES_PER_SECOND in Carbon when a
 # stop/shutdown is initiated.  This helps when MAX_UPDATES_PER_SECOND is
 # relatively low and carbon has cached a lot of updates; it enables the carbon
-# daemon to shutdown more quickly. 
+# daemon to shutdown more quickly.
 # MAX_UPDATES_PER_SECOND_ON_SHUTDOWN = 1000
 
 # Softly limits the number of whisper files that get created each minute.
@@ -200,8 +193,8 @@ WHISPER_FALLOCATE_CREATE = True
 # MANHOLE_INTERFACE = 127.0.0.1
 # MANHOLE_PORT = 7222
 # MANHOLE_USER = admin
-# MANHOLE_PUBLIC_KEY = ssh-rsa AAAAB3NzaC1yc2EAAAABiwAaAIEAoxN0sv/e4eZCPpi3N3KYvyzRaBaMeS2RsOQ/cDuKv11dlNzVeiyc3RFmCv5Rjwn/lQ79y0zyHxw67q
-LyhQ/kDzINc4cY41ivuQXm2tPmgvexdrBv5nsfEpjs3gLZfJnyvlcVyWK/lId8WUvEWSWHTzsbtmXAF2raJMdgLTbQ8wE=
+# MANHOLE_PUBLIC_KEY = ssh-rsa AAAAB3NzaC1yc2EAAAABiwAaAIEAoxN0sv/e4eZCPpi3N3KYvyzRaBaMeS2RsOQ/cDuKv11dlNzVeiyc3RFmCv5Rjwn/lQ79y0zyHxw67qLyhQ/kDzINc4cY41ivuQXm2tPmgvexdrBv5nsfEpjs3gLZfJ
+nyvlcVyWK/lId8WUvEWSWHTzsbtmXAF2raJMdgLTbQ8wE=
 
 # Patterns for all of the metrics this machine will store. Read more at
 # http://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol#Bindings
@@ -224,7 +217,6 @@ LyhQ/kDzINc4cY41ivuQXm2tPmgvexdrBv5nsfEpjs3gLZfJnyvlcVyWK/lId8WUvEWSWHTzsbtmXAF2
 
 
 [relay]
-USER = carbon
 LINE_RECEIVER_INTERFACE = 0.0.0.0
 LINE_RECEIVER_PORT = 2013
 PICKLE_RECEIVER_INTERFACE = 0.0.0.0
@@ -276,10 +268,19 @@ DESTINATIONS = 127.0.0.1:2004
 MAX_DATAPOINTS_PER_MESSAGE = 500
 MAX_QUEUE_SIZE = 10000
 
+# This is the percentage that the queue must be empty before it will accept
+# more messages.  For a larger site, if the queue is very large it makes sense
+# to tune this to allow for incoming stats.  So if you have an average
+# flow of 100k stats/minute, and a MAX_QUEUE_SIZE of 3,000,000, it makes sense
+# to allow stats to start flowing when you've cleared the queue to 95% since
+# you should have space to accommodate the next minute's worth of stats
+# even before the relay incrementally clears more of the queue
+QUEUE_LOW_WATERMARK_PCT = 0.8
+
 # Set this to False to drop datapoints when any send queue (sending datapoints
 # to a downstream carbon daemon) hits MAX_QUEUE_SIZE. If this is True (the
 # default) then sockets over which metrics are received will temporarily stop accepting
-# data until the send queues fall below 80% MAX_QUEUE_SIZE.
+# data until the send queues fall below QUEUE_LOW_WATERMARK_PCT * MAX_QUEUE_SIZE.
 USE_FLOW_CONTROL = True
 
 # Set this to True to enable whitelisting and blacklisting of metrics in
@@ -295,7 +296,6 @@ USE_FLOW_CONTROL = True
 
 
 [aggregator]
-USER = carbon
 LINE_RECEIVER_INTERFACE = 0.0.0.0
 LINE_RECEIVER_PORT = 2023
 
@@ -307,8 +307,14 @@ LOG_LISTENER_CONNECTIONS = True
 
 # If set true, metric received will be forwarded to DESTINATIONS in addition to
 # the output of the aggregation rules. If set false the carbon-aggregator will
-# only ever send the output of aggregation.
-FORWARD_ALL = True
+# only ever send the output of aggregation. Default value is set to false and will not forward
+FORWARD_ALL = False
+
+# Filenames of the configuration files to use for this instance of aggregator.
+# Filenames are relative to CONF_DIR.
+#
+# AGGREGATION_RULES = aggregation-rules.conf
+# REWRITE_RULES = rewrite-rules.conf
 
 # This is a list of carbon daemons we will send any relayed or
 # generated metrics to. The default provided would send to a single
@@ -316,7 +322,7 @@ FORWARD_ALL = True
 # use multiple carbon-cache instances then it would look like this:
 #
 # DESTINATIONS = 127.0.0.1:2004:a, 127.0.0.1:2104:b
-# 
+#
 # The format is comma-delimited IP:PORT:INSTANCE where the :INSTANCE part is
 # optional and refers to the "None" instance if omitted.
 #
