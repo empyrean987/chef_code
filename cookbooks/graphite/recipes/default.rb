@@ -4,32 +4,41 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 # Installing Apache 2.2
-package 'httpd-2.2.29-1.5.amzn1'
+package 'httpd' do
+    version '2.2.29-1.5.amzn1'
+end
 
 #Install WSGI for Apapche, required to run Graphite WSGI scripts
-package 'mod_wsgi-python27-3.2-6.11.amzn1'
+package 'mod_wsgi-python27'
+    version '3.2-6.11.amzn1'
+end
 
 #Installing Cairo from epel repository
-package 'python27-pycairo-1.8.6-2.1.11.amzn1' do
-  options "--enablerepo=epel"
+package 'python27-pycairo' do
+  options '--enablerepo=epel'
+  version '1.8.6-2.1.11.amzn1'
 end
 
 #Installing Cairo Development Packages from epel repository
-package 'python27-pycairo-devel-1.8.6-2.1.11.amzn1' do
-  options "--enablerepo=epel"
+package 'python27-pycairo-devel' do
+  options '--enablerepo=epel'
+  version '1.8.6-2.1.11.amzn1'
 end
 
 #Installing Twisted from epel repository
-package 'python27-twisted-8.2.0-3.1.3.amzn1' do
-  options "--enablerepo=epel"
+package 'python27-twisted' do
+  options '--enablerepo=epel'
+  version '8.2.0-3.1.3.amzn1'
 end
 
 #GCC is required for Pytz, installing
-package 'gcc-4.8.2-3.19.amzn1'
-
+package 'gcc' do
+  version '4.8.2-3.19.amzn1'
+end
 #Installing Pytz
-package 'python27-pytz-2010h-2.6.amzn1'
-
+package 'python27-pytz'
+  version '2010h-2.6.amzn1'
+end
 #Decide to use pip for Django so we can only use python 2.7, using PIP
 #Installing Django
 execute 'django_install' do
