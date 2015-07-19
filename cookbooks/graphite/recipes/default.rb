@@ -36,7 +36,7 @@ package 'gcc' do
   version '4.8.2-3.19.amzn1'
 end
 #Installing Pytz
-package 'python27-pytz'
+package 'python27-pytz' do
   version '2010h-2.6.amzn1'
 end
 #Decide to use pip for Django so we can only use python 2.7, using PIP
@@ -50,12 +50,12 @@ execute 'django-tagging_install' do
   command 'pip install django-tagging'
 end
 
-#package 'pyparsing.noarch' do
+#Installing Pyparsing, same issue with Python 2.7, using PIP
 execute 'pyparsing_install' do
   command 'pip install pyparsing'
 end
 
-#package 'python-whisper.noarch' do
+#Installing Whisper, same issue with Python 2.7, using PIP
 execute 'whisper_install' do
   command 'pip install whisper'
 end
