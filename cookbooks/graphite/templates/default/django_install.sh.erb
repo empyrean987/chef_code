@@ -1,11 +1,16 @@
 #!/bin/bash
+#This script runs the command to install the django database and ensure the output of the script returns Installed as notification it was installed correctly
 
+#Evaluate if django was installed or not
 if [ -s /root/chef_code/django_installed_correctly ]
 then
  echo 'django is installed'
 else
+#If Django is not installed execute the following command
  echo 'installing django database'
  python /opt/graphite/webapp/graphite/manage.py syncdb --noinput > /root/chef_code/django_installed_execute
+ #Grep for Installed of output to evaluate wether it was installed correctly or not
+ #This will then be captured by chef to evaluate if the file was created if it was installed correctly
  cat /root/chef_code/django_installed_execute | grep Installed > /root/chef_code/django_installed
  if [ -s /root/chef_code/django_installed ]
  then
