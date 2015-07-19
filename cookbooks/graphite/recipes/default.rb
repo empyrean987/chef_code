@@ -144,7 +144,7 @@ template '/etc/httpd/conf.d/welcome.conf' do
 end
 
 #Configuration file for graphite-web python application
-template '/etc/graphite-web/local_settings.py' do
+template '/opt/graphite/webapp/graphite/local_settings.py' do
   source 'local_settings.py.erb'
 end
 
