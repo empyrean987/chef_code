@@ -98,31 +98,31 @@ template '/etc/init.d/carbon-cache' do
 end
 #This sets the carb-cache service to be enabled in the operating system to be started on restart
 service 'carbon-cache' do
-  supports :status => true
+  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
   action [:enable]
 end
 
 #Configuration file for storage schemas, restart carbon-cache if modified
 template '/opt/graphite/conf/storage-schemas.conf' do
   source 'storage-schemas.conf.erb'
-  notifies :reload, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]', :delayed
 end
 
 #Configuration file for carbon, restart carbon-cache if modified
 template '/opt/graphite/conf/carbon.conf' do
   source 'carbon.conf.erb'
-  notifies :reload, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]', :delayed
 end
 
 #Configuration file for storage aggregation, restart carbon-cache if modified
 template '/opt/graphite/conf/storage-aggregation.conf' do
   source 'storage-aggregation.conf.erb'
-  notifies :reload, 'service[carbon-cache]'
+  notifies :reload, 'service[carbon-cache]', :delayed
 end
 
 #Making sure carbon-cache is started after first install, otherwise makes sure its running
 service 'carbon-cache' do
-  supports :status => true
+  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
   action [:start]
 end
 
@@ -148,47 +148,46 @@ end
 
 #This sets the httpd service to be enabled in the operating system to be started on restart
 service 'httpd' do
-  supports :status => true
+  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
   action [:enable]
 end
 
 #This file needs to be commented out so it no longer is reference by apache
 template '/etc/httpd/conf.d/welcome.conf' do
   source 'welcome.conf.erb'
-  notifies :reload, 'service[httpd]'
+  notifies :reload, 'service[httpd]', :delayed
 end
 
 #This is the configuration file for the web portion of graphite
 template '/etc/httpd/conf.d/graphite-web.conf' do
   source 'graphite-web.conf.erb'
-  notifies :reload, 'service[httpd]'
+  notifies :reload, 'service[httpd]', :delayed
 end
 
 #This is the conifguration file for apache to work correctly
 template '/etc/httpd/conf/httpd.conf' do
   source 'httpd.conf.erb'
-  notifies :reload, 'service[httpd]'
+  notifies :reload, 'service[httpd]', :delayed
 end
 
 #This is the conifguration file for apache to work correctly withy wsgi
 template '/etc/httpd/conf/wsgi.conf' do
   source 'wsgi.conf.erb'
-  notifies :reload, 'service[httpd]'
+  notifies :reload, 'service[httpd]', :delayed
 end
 
 service 'httpd' do
-  supports :status => true
   action [:start]
 end
 
 #This sets the sshd service to be enabled in the operating system to be started on restart
 service 'sshd' do
-  supports :status => true
+  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
   action [:enable]
 end
 
 #Template to modify sshd configuration, and on moidification restart
 template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
-  notifies :reload, 'service[sshd]'
+  notifies :reload, 'service[sshd]', :delayed
 end
