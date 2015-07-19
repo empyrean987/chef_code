@@ -9,7 +9,7 @@ package 'httpd' do
 end
 
 #Install WSGI for Apapche, required to run Graphite WSGI scripts
-package 'mod_wsgi-python27'
+package 'mod_wsgi-python27' do
     version '3.2-6.11.amzn1'
 end
 
