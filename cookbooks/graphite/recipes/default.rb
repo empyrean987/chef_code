@@ -121,12 +121,9 @@ template '/opt/graphite/conf/storage-aggregation.conf' do
   notifies :reload, 'service[carbon-cache]'
 end
 
-#Modify /opt/graphite/storage to be owned and grouped by apache
-directory '/opt/graphite/storage/' do
-  owner 'apache'
-  group 'apache'
-  recursive true
-  action :create
+#Modify /opt/graphite/storage to be owned and grouped by apache, could not use directory resource
+execute 'fix_ownership' do
+  command 'chown -R apache:apache /opt/graphite/storage/'
 end
 
 #The graphite.wsgi need to be created for graphite to work
