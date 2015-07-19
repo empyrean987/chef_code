@@ -4,14 +4,13 @@
 #
 # chkconfig:   - 20 80
 # description: Starts and stops the carbon-cache daemon.
-export PYTHONPATH=/usr/lib/python2.6/site-packages
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="/usr/bin/carbon-cache"
+exec="/opt/graphite/bin/carbon-cache.py"
 pidfile="/var/run/carbon-cache.pid"
 
-CONFIG="/etc/carbon/carbon.conf"
+CONFIG="/opt/graphite/conf/carbon.conf"
 LOG_DIR="/var/log/carbon"
 
 [ -e /etc/sysconfig/carbon ] && . /etc/sysconfig/carbon
