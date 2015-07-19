@@ -1,9 +1,26 @@
 <html>
-<SCRIPT LANGUAGE="JavaScript">
-var ip = '<!--#echo var="REMOTE_ADDR"-->';
-document.write("Your IP address is" + ip);
+<head>
+<title>403 Error - Permission Denied</title>
+<script type="text/javascript">
+  function codeAddress() 
+  {
+    var ip = '<!--#echo var="REMOTE_ADDR"-->';
+    document.getElementById("IP").innerHTML = ip;
+  }
+  window.onload = codeAddress;
 </script>
-<h1>
-UGHHHH
-</h1>
+</head>
+
+<body>
+
+<h1>403 - Permission Denied</h1>
+<p>
+<form>
+  YourIP: <label name="IP" id="IP"></label>
+</form>
+Does not have permission to view the web page you have requested<br>
+Plese send an email to the Administrator<br>
+<a href="mailto:knoxm1@gmail.com?Subject=Update%20Graphite">Send Mail</a>
+</p>
+</body>
 </html>
