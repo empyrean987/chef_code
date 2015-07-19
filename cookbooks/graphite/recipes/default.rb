@@ -65,6 +65,10 @@ template '/opt/graphite/conf/graphite.wsgi' do
   source 'graphite.wsgi.erb'
 end
 
+template /opt/graphite/conf/storage-schemas.conf' do
+  source 'storage-schemas.conf.erb'
+end
+
 
 template '/root/chef_code/django_install.sh' do
   source 'django_install.sh.erb'
