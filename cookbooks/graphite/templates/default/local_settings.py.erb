@@ -55,7 +55,6 @@ SECRET_KEY = 'BOB'
 # Change only GRAPHITE_ROOT if your install is merely shifted from /opt/graphite
 # to somewhere else
 #GRAPHITE_ROOT = '/opt/graphite'
-GRAPHITE_ROOT = '/usr/share/graphite'
 
 # Most installs done outside of a separate tree such as /opt/graphite will only
 # need to change these three settings. Note that the default settings for each
@@ -63,16 +62,13 @@ GRAPHITE_ROOT = '/usr/share/graphite'
 #CONF_DIR = '/opt/graphite/conf'
 #STORAGE_DIR = '/opt/graphite/storage'
 #CONTENT_DIR = '/opt/graphite/webapp/content'
-CONF_DIR = '/etc/graphite-web'
-STORAGE_DIR = '/var/lib/graphite-web'
-CONTENT_DIR = '/usr/share/graphite/webapp/content'
 
 # To further or fully customize the paths, modify the following. Note that the
 # default settings for each of these are relative to CONF_DIR and STORAGE_DIR
 #
 ## Webapp config files
-#DASHBOARD_CONF = '/etc/graphite-web/dashboard.conf'
-#GRAPHTEMPLATES_CONF = '/etc/graphite-web/graphTemplates.conf'
+#DASHBOARD_CONF = '/opt/graphite/conf/dashboard.conf'
+#GRAPHTEMPLATES_CONF = '/opt/graphite/conf/graphTemplates.conf'
 
 ## Data directories
 # NOTE: If any directory is unreadable in DATA_DIRS it will break metric browsing
@@ -81,11 +77,6 @@ CONTENT_DIR = '/usr/share/graphite/webapp/content'
 #DATA_DIRS = [WHISPER_DIR, RRD_DIR] # Default: set from the above variables
 #LOG_DIR = '/opt/graphite/storage/log/webapp'
 #INDEX_FILE = '/opt/graphite/storage/index'  # Search index file
-WHISPER_DIR = '/var/lib/carbon/whisper/'
-RRD_DIR = '/var/lib/carbon/rrd'
-DATA_DIRS = [WHISPER_DIR, RRD_DIR] # Default: set from the above variables
-LOG_DIR = '/var/log/graphite-web/'
-INDEX_FILE = '/var/lib/graphite-web/index'  # Search index file
 
 
 #####################################
@@ -186,6 +177,14 @@ INDEX_FILE = '/var/lib/graphite-web/index'  # Search index file
 #REMOTE_STORE_RETRY_DELAY = 60    # Time before retrying a failed remote webapp
 #REMOTE_FIND_CACHE_DURATION = 300 # Time to cache remote metric find results
 
+## Prefetch cache
+# set to True to fetch all metrics using a single http request per remote server
+# instead of one http request per target, per remote server.
+# Especially useful when generating graphs with more than 4-5 targets or if
+# there's significant latency between this server and the backends. (>20ms)
+#REMOTE_PREFETCH_DATA = False
+
+
 ## Remote rendering settings
 # Set to True to enable rendering of Graphs on a remote webapp
 #REMOTE_RENDERING = True
@@ -203,6 +202,10 @@ INDEX_FILE = '/var/lib/graphite-web/index'  # Search index file
 # You *should* use 127.0.0.1 here in most cases
 #CARBONLINK_HOSTS = ["127.0.0.1:7002:a", "127.0.0.1:7102:b", "127.0.0.1:7202:c"]
 #CARBONLINK_TIMEOUT = 1.0
+# Using 'query-bulk' queries for carbon
+# It's more effective, but python-carbon 0.9.13 (or latest from 0.9.x branch) is required
+# See https://github.com/graphite-project/carbon/pull/132 for details
+#CARBONLINK_QUERY_BULK = False
 
 #####################################
 # Additional Django Settings #
