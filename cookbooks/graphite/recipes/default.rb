@@ -126,6 +126,7 @@ directory '/opt/graphite/storage/' do
   owner 'apache'
   group 'apache'
   recursive true
+  action :create
 end
 
 #The graphite.wsgi need to be created for graphite to work
