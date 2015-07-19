@@ -116,7 +116,7 @@ end
 directory '/opt/graphite/storage/' do
   owner 'apache'
   group 'apache'
-  recursive 'true'
+  recursive true
 end
 
 #The graphite.wsgi need to be created for graphite to work
