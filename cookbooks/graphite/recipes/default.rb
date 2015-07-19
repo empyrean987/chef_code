@@ -166,5 +166,5 @@ end
 #Template to modify sshd configuration, and on moidification restart
 template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
-  notifies :restart, 'service[sshd]'
+  notifies :reload, 'service[sshd]'
 end
