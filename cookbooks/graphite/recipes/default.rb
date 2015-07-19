@@ -163,6 +163,12 @@ template '/etc/httpd/conf/wsgi.conf' do
   notifies :reload, 'service[httpd]'
 end
 
+#This sets the sshd service to be enabled in the operating system to be started on restart
+service 'sshd' do
+  supports :status => true
+  action [:enable]
+end
+
 #Template to modify sshd configuration, and on moidification restart
 template '/etc/ssh/sshd_config' do
   source 'sshd_config.erb'
