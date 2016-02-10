@@ -181,13 +181,13 @@ service 'httpd' do
 end
 
 #This sets the sshd service to be enabled in the operating system to be started on restart
-service 'sshd' do
-  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
-  action [:enable]
-end
+#service 'sshd' do
+#  supports :status => true, :reload => true, :start => true, :restart =>true, :stop =>true
+#  action [:enable]
+#end
 
 #Template to modify sshd configuration, and on moidification restart
-template '/etc/ssh/sshd_config' do
-  source 'sshd_config.erb'
-  notifies :reload, 'service[sshd]', :delayed
-end
+#template '/etc/ssh/sshd_config' do
+#  source 'sshd_config.erb'
+#  notifies :reload, 'service[sshd]', :delayed
+#end
