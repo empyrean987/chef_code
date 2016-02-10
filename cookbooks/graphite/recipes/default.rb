@@ -5,7 +5,7 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 # Installing Apache 2.2
 package 'httpd' do
-    version '2.2.29-1.5.amzn1'
+    version '2.2.31-1.6.amzn1
 end
 
 #Install WSGI for Apapche, required to run Graphite WSGI scripts
