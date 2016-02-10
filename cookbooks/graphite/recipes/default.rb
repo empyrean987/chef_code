@@ -165,10 +165,10 @@ template '/etc/httpd/conf.d/graphite-web.conf' do
 end
 
 #This is the conifguration file for apache to work correctly
-template '/etc/httpd/conf/httpd.conf' do
-  source 'httpd.conf.erb'
-  notifies :reload, 'service[httpd]', :delayed
-end
+#template '/etc/httpd/conf/httpd.conf' do
+#  source 'httpd.conf.erb'
+#  notifies :reload, 'service[httpd]', :delayed
+#end
 
 #This is the conifguration file for apache to work correctly withy wsgi
 template '/etc/httpd/conf/wsgi.conf' do
